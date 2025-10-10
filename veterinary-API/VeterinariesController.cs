@@ -29,7 +29,7 @@ namespace veterinary_API
 
         // mi codigo
         [HttpGet]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> GetVeterinariesAsync()
         {
             var vets = await _VeterinaryBusinessLogic.ObtenerTodosAsync();
             return Ok(vets);
@@ -38,11 +38,11 @@ namespace veterinary_API
 
         //fin
         // GET: api/Veterinaries
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Veterinary>>> GetVeterinary()
-        {
-            return await _context.Veterinaries.ToListAsync();
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Veterinary>>> GetVeterinary()
+        //{
+        //    return await _context.Veterinaries.ToListAsync();
+        //}
 
         // GET: api/Veterinaries/5
         [HttpGet("{id}")]
