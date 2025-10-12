@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using veterinary_API.BusinessLogic;
+using veterinary_API.Interfaces;
 using veterinary_API.Repository;
 var builder = WebApplication.CreateBuilder(args);
  
@@ -10,6 +11,7 @@ builder.Services.AddDbContext<VeterinaryContext>(options =>
 // Add services to the container.
 
 builder.Services.AddScoped<IVeterinaryRepository, VeterinaryRepository>();
+builder.Services.AddScoped<IVeterinaryBusinessLogic, VeterinaryBusinessLogic>();
 builder.Services.AddScoped<VeterinaryBusinessLogic>();
 
 builder.Services.AddCors(options =>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using veterinary_API.Exceptions;
+using veterinary_API.Interfaces;
 using veterinary_API.Models;
 
 namespace veterinary_API.Repository
@@ -15,18 +16,13 @@ namespace veterinary_API.Repository
             _context = context;
         }
 
-        public async Task<List<Veterinary>> GetAllAsync()
-        {
-            // para insert update delete
-            //   catch (DbUpdateException ex)
-            //{
-            //    throw new RepositoryException("Error al traer el veterinario en la base de datos.", ex);
-           // }
+        public async Task<IEnumerable<Veterinary>> GetAllAsync()
+        { 
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                return await _context.Veterinaries
-                                //.Include(v => v.Consultorio)
+                return  await _context.Veterinaries
+                                .Include(v => v.Patients)
                                 .ToListAsync();
             }
          
