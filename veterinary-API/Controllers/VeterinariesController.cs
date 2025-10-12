@@ -10,7 +10,7 @@ using veterinary_API.Exceptions;
 using veterinary_API.Interfaces;
 using veterinary_API.Models;
 
-namespace veterinary_API
+namespace veterinary_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -25,7 +25,7 @@ namespace veterinary_API
             _context = context;
             _VeterinaryBusinessLogic = veterinaryBusinessLogic;
         }
-         
+
         // mi codigo
         [HttpGet]
         public async Task<IActionResult> GetVeterinariesAsync()
@@ -36,7 +36,7 @@ namespace veterinary_API
                 return Ok(vets);
             }
             catch (RepositoryException rex)
-            { 
+            {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     $"Error en el acceso a datos: {rex.Message}");
             }
@@ -54,7 +54,7 @@ namespace veterinary_API
 
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Ocurrió un error interno en el servidor. Intente nuevamente más tarde.");
-            } 
+            }
         }
 
         [HttpGet("{id}")]
