@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace veterinary_API.Migrations
 {
     [DbContext(typeof(VeterinaryContext))]
-    partial class VeterinaryContextModelSnapshot : ModelSnapshot
+    [Migration("20251013062034_ChangedPatientFields")]
+    partial class ChangedPatientFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,7 +106,7 @@ namespace veterinary_API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MedicalRecordId")
+                    b.Property<int>("MedicalRecordId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -152,7 +155,7 @@ namespace veterinary_API.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ClinicId")
+                    b.Property<int>("ClinicId")
                         .HasColumnType("int");
 
                     b.Property<string>("Lastname")
@@ -215,7 +218,8 @@ namespace veterinary_API.Migrations
                     b.HasOne("veterinary_API.Models.Clinic", "Clinic")
                         .WithMany("Veterinaries")
                         .HasForeignKey("ClinicId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Clinic");
                 });

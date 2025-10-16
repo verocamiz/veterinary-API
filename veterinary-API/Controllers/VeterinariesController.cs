@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using veterinary_API.BusinessLogic;
+using veterinary_API.DTOs;
 using veterinary_API.Exceptions;
 using veterinary_API.Interfaces;
 using veterinary_API.Models;
@@ -88,69 +89,74 @@ namespace veterinary_API.Controllers
 
         }
 
-        //fin
-        // GET: api/Veterinaries
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Veterinary>>> GetVeterinary()
-        //{
-        //    return await _context.Veterinaries.ToListAsync();
-        //}
+        [HttpPost]
+        public async Task<IActionResult> CreateVeterinary(VeterinaryCreateUpdateDTO veterinary)
+        {
+            try
+            {
+                var vet = await _VeterinaryBusinessLogic.CreateVetAsync(veterinary);
+                return Ok(vet);
+            }
+            catch (RepositoryException rex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Error en el acceso a datos: {rex.Message}");
+            }
+            catch (BusinessException bex)
+            {
+                // ⚠️ Error lógico conocido
+                return BadRequest($"Error de negocio: {bex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // 🚨 Error inesperado
+                Console.WriteLine($"[ERROR] {DateTime.Now}: {ex.Message}");
+                if (ex.InnerException != null)
+                    Console.WriteLine($"Inner: {ex.InnerException.Message}");
 
-        // GET: api/Veterinaries/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Veterinary>> GetVeterinary(int id)
-        //{
-        //    var veterinary = await _context.Veterinaries.FindAsync(id);
-
-        //    if (veterinary == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return veterinary;
-        //}
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Ocurrió un error interno en el servidor. Intente nuevamente más tarde.");
+            } 
+        }
+ 
 
         // PUT: api/Veterinaries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVeterinary(int id, Veterinary veterinary)
+        public async Task<IActionResult> UpdateVeterinaryAsync(int id, VeterinaryCreateUpdateDTO veterinary)
         {
-            if (id != veterinary.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(veterinary).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                if (id != veterinary.Id)
+                {
+                    return BadRequest();
+                }
+
+                var vet = await _VeterinaryBusinessLogic.UpdateVetAsync(veterinary);
+                return Ok(vet);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (RepositoryException rex)
             {
-                if (!VeterinaryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Error en el acceso a datos: {rex.Message}");
             }
+            catch (BusinessException bex)
+            {
+                // ⚠️ Error lógico conocido
+                return BadRequest($"Error de negocio: {bex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // 🚨 Error inesperado
+                Console.WriteLine($"[ERROR] {DateTime.Now}: {ex.Message}");
+                if (ex.InnerException != null)
+                    Console.WriteLine($"Inner: {ex.InnerException.Message}");
 
-            return NoContent();
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Ocurrió un error interno en el servidor. Intente nuevamente más tarde.");
+            } 
         }
-
-        //// POST: api/Veterinaries
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Veterinary>> PostVeterinary(Veterinary veterinary)
-        //{
-        //    _context.Veterinaries.Add(veterinary);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetVeterinary", new { id = veterinary.Id }, veterinary);
-        //}
+         
 
         //// DELETE: api/Veterinaries/5
         //[HttpDelete("{id}")]

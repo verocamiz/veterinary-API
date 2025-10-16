@@ -15,5 +15,12 @@ namespace veterinary_API.Interfaces
         /// An asynchronous task that produces an enumerable collection of <see cref="Veterinary"/> objects.
         /// </returns>
         Task<IEnumerable<Veterinary>> GetAllAsync();
+        Task<Veterinary?> GetVeterinaryByIdAsync(int id);
+
+        public Task<ICollection<Patient>> GetPatientsByIds(IEnumerable<int> patientIds);
+
+        public Task<Veterinary> CreateVeterinaryAsync(Veterinary entity);
+
+        public  Task<Veterinary> UpdateVeterinaryAsync(Veterinary entity);
     }
 }

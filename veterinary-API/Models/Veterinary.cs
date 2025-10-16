@@ -10,10 +10,10 @@ namespace veterinary_API.Models
         public string Address { get; set; }
         public DateTime BirthDate { get; set; }
         public int YearStartedWorking { get; set; }
-        public int ClinicId { get; set; } // FK
-        public Clinic Clinic { get; set; } // Table
+        public int? ClinicId { get; set; } // FK
+        public Clinic? Clinic { get; set; } // Table
 
-        public ICollection<Patient> Patients { get; set; } = new List<Patient>();
+        public ICollection<Patient>? Patients { get; set; } = new List<Patient>();
          
         public Veterinary() { }
          

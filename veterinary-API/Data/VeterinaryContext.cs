@@ -11,10 +11,10 @@ public class VeterinaryContext : DbContext
         : base(options) { }
 
     public DbSet<Veterinary> Veterinaries { get; set; }
-    public DbSet<MedicalRecord> MedicalRecord { get; set; }
-    public DbSet<Patient> Patient { get; set; }
+    public DbSet<MedicalRecord> MedicalRecords { get; set; }
+    public DbSet<Patient> Patients { get; set; }
     public DbSet<Species> Species { get; set; }
-    public DbSet<Clinic> Clinic { get; set; } 
+    public DbSet<Clinic> Clinics { get; set; } 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     { 

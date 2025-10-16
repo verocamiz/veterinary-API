@@ -24,6 +24,8 @@ namespace veterinary_API.Interfaces
         /// An asynchronous task that produces a collection of <see cref="VeterinaryDTO"/> objects
         /// matching the given identifier. Returns an empty collection if no records are found.
         /// </returns>
-        public Task<IEnumerable<VeterinaryDTO>> ObtenerByIdAsync(int id);
+        public Task<VeterinaryDTO> ObtenerByIdAsync(int id);
+        public Task<VeterinaryDTO> CreateVetAsync(VeterinaryCreateUpdateDTO vet);
+        public Task<VeterinaryDTO> UpdateVetAsync(VeterinaryCreateUpdateDTO dto);
     }
 }

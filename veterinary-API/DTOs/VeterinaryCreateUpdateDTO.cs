@@ -10,7 +10,7 @@ namespace veterinary_API.DTOs
         public string Address { get; set; }
         public DateTime BirthDate { get; set; }
         public int YearStartedWorking { get; set; }
-        public IEnumerable<int> Patients { get; set; } = new List<int>();
-
+        public IEnumerable<int> Patients { get; set; } = new List<int>(); 
+        public int ClinicId { get; set; }
     }
 }
