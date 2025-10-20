@@ -27,5 +27,6 @@ namespace veterinary_API.Interfaces
         public Task<VeterinaryDTO> ObtenerByIdAsync(int id);
         public Task<VeterinaryDTO> CreateVetAsync(VeterinaryCreateUpdateDTO vet);
         public Task<VeterinaryDTO> UpdateVetAsync(VeterinaryCreateUpdateDTO dto);
+        public Task DeleteVetAsync(int id);
     }
 }

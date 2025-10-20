@@ -19,30 +19,20 @@ namespace veterinary_API.BusinessLogic
         }
 
         public async Task<IEnumerable<VeterinaryDTO>> ObtenerTodosAsync()
-        {
-            try
-            {
+        { 
                 var vets = await _repo.GetAllAsync();
 
                 var vetsDto = vets.Select(v => new VeterinaryDTO
                 {
                     Id = v.Id,
-                    FullName = $"{v.Name} {v.Lastname}",
-                   // ClinicName = v.Clinic?.Name
+                    FullName = $"{v.Name} {v.Lastname}", 
                 });
 
-                return vetsDto;
-            }
-            catch (RepositoryException ex)
-            {
-                throw new BusinessException("Error al acceder a los datos del veterinario.", ex);
-            }
+                return vetsDto; 
         }
 
         public async Task<VeterinaryDTO> ObtenerByIdAsync(int id)
-        {
-            try
-            {
+        { 
                 var v = await _repo.GetVeterinaryByIdAsync(id);
 
                 if (v == null)
@@ -54,18 +44,12 @@ namespace veterinary_API.BusinessLogic
                     FullName = $"{v.Name} {v.Lastname}", 
                 };
 
-                return vetsDto;
-            }
-            catch (RepositoryException ex)
-            {
-                throw new BusinessException("Error al acceder a los datos del veterinario.", ex);
-            }
+                return vetsDto; 
         }
 
         public async Task<VeterinaryDTO> CreateVetAsync(VeterinaryCreateUpdateDTO dto)
         {
-            try
-            {
+             
                 var newVet = new Veterinary
                 {
                     Name = dto.Name,
@@ -86,11 +70,7 @@ namespace veterinary_API.BusinessLogic
                     Id = createdVet.Id,
                     FullName = $"{createdVet.Name} {createdVet.Lastname}", 
                 };
-            }
-            catch (RepositoryException ex)
-            {
-                throw new BusinessException("Error al acceder a los datos del veterinario.", ex.InnerException);
-            }
+            
         }
 
         public async Task<VeterinaryDTO> UpdateVetAsync(VeterinaryCreateUpdateDTO dto)
@@ -98,8 +78,8 @@ namespace veterinary_API.BusinessLogic
             try
             {
                 var vet = await _repo.GetVeterinaryByIdAsync(dto.Id);
-                if (vet == null)
-                    throw new BusinessException($"Veterinary with ID {dto.Id} not found.");
+
+                if (vet == null)  throw new BusinessException($"Veterinary with ID {dto.Id} not found.");
                  
                 vet.Name = dto.Name;
                 vet.Lastname = dto.Lastname;
@@ -109,9 +89,10 @@ namespace veterinary_API.BusinessLogic
                  
                 var patientsDB = await _repo.GetPatientsByIds(dto.Patients);
                  
-                vet.Patients.Clear();
+                vet.Patients?.Clear();
+
                 foreach (var p in patientsDB)
-                    vet.Patients.Add(p);
+                    vet.Patients?.Add(p);
                  
                 var updatedVet = await _repo.UpdateVeterinaryAsync(vet);
                  
@@ -126,6 +107,14 @@ namespace veterinary_API.BusinessLogic
             {
                 throw new BusinessException("Error al acceder a los datos del veterinario.", ex.InnerException);
             }
+        }
+
+        public async Task DeleteVetAsync(int id) {
+            var veterinary = await _repo.GetVeterinaryByIdAsync(id);
+
+            if (veterinary == null) throw new BusinessException($"Veterinary not found.");
+
+            await _repo.DeleteVetAsync(veterinary);
         }
     }
 

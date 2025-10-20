@@ -22,5 +22,6 @@ namespace veterinary_API.Interfaces
         public Task<Veterinary> CreateVeterinaryAsync(Veterinary entity);
 
         public  Task<Veterinary> UpdateVeterinaryAsync(Veterinary entity);
+        public Task DeleteVetAsync(Veterinary entity);
     }
 }

@@ -18,7 +18,7 @@ namespace veterinary_API.Repository
         }
 
         public async Task<IEnumerable<Veterinary>> GetAllAsync()
-        {  
+        { 
             try
             {
                 return  await _context.Veterinaries
@@ -102,5 +102,27 @@ namespace veterinary_API.Repository
                 throw new RepositoryException($"Error when trying to get the veterinaries", ex);
             }
         }
+         
+        public async Task DeleteVetAsync(Veterinary entity)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+               
+
+                _context.Veterinaries.Remove(entity);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+            }
+
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                throw new RepositoryException($"Error when trying to get the veterinaries", ex);
+            }
+        }
+
+
     }
 }

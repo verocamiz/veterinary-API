@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using veterinary_API.BusinessLogic;
 using veterinary_API.Interfaces;
+using veterinary_API.Middlewares;
 using veterinary_API.Repository;
 var builder = WebApplication.CreateBuilder(args);
  
@@ -31,6 +32,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+ 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -27,152 +27,43 @@ namespace veterinary_API.Controllers
             _VeterinaryBusinessLogic = veterinaryBusinessLogic;
         }
 
-        // mi codigo
-        [HttpGet]
+        [HttpGet(Name = nameof(GetVeterinariesAsync))] 
         public async Task<IActionResult> GetVeterinariesAsync()
-        {
-            try
-            {
-                var vets = await _VeterinaryBusinessLogic.ObtenerTodosAsync();
-                return Ok(vets);
-            }
-            catch (RepositoryException rex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Error en el acceso a datos: {rex.Message}");
-            }
-            catch (BusinessException bex)
-            {
-                // ⚠️ Error lógico conocido
-                return BadRequest($"Error de negocio: {bex.Message}");
-            }
-            catch (Exception ex)
-            {
-                // 🚨 Error inesperado
-                Console.WriteLine($"[ERROR] {DateTime.Now}: {ex.Message}");
-                if (ex.InnerException != null)
-                    Console.WriteLine($"Inner: {ex.InnerException.Message}");
-
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Ocurrió un error interno en el servidor. Intente nuevamente más tarde.");
-            }
+        { 
+            var vets = await _VeterinaryBusinessLogic.ObtenerTodosAsync();
+            return Ok(vets); 
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = nameof(GetVeterinaryByIdAsync))] 
         public async Task<IActionResult> GetVeterinaryByIdAsync(int id)
-        {
-            try
-            {
-                var vets = await _VeterinaryBusinessLogic.ObtenerByIdAsync(id);
-                return Ok(vets);
-            }
-            catch (RepositoryException rex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Error en el acceso a datos: {rex.Message}");
-            }
-            catch (BusinessException bex)
-            {
-                // ⚠️ Error lógico conocido
-                return BadRequest($"Error de negocio: {bex.Message}");
-            }
-            catch (Exception ex)
-            {
-                // 🚨 Error inesperado
-                Console.WriteLine($"[ERROR] {DateTime.Now}: {ex.Message}");
-                if (ex.InnerException != null)
-                    Console.WriteLine($"Inner: {ex.InnerException.Message}");
-
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Ocurrió un error interno en el servidor. Intente nuevamente más tarde.");
-            }
-
+        { 
+            var vets = await _VeterinaryBusinessLogic.ObtenerByIdAsync(id);
+            return Ok(vets); 
         }
 
-        [HttpPost]
+        [HttpPost(Name = nameof(CreateVeterinary))] 
         public async Task<IActionResult> CreateVeterinary(VeterinaryCreateUpdateDTO veterinary)
-        {
-            try
-            {
-                var vet = await _VeterinaryBusinessLogic.CreateVetAsync(veterinary);
-                return Ok(vet);
-            }
-            catch (RepositoryException rex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Error en el acceso a datos: {rex.Message}");
-            }
-            catch (BusinessException bex)
-            {
-                // ⚠️ Error lógico conocido
-                return BadRequest($"Error de negocio: {bex.Message}");
-            }
-            catch (Exception ex)
-            {
-                // 🚨 Error inesperado
-                Console.WriteLine($"[ERROR] {DateTime.Now}: {ex.Message}");
-                if (ex.InnerException != null)
-                    Console.WriteLine($"Inner: {ex.InnerException.Message}");
-
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Ocurrió un error interno en el servidor. Intente nuevamente más tarde.");
-            } 
+        { 
+            var vet = await _VeterinaryBusinessLogic.CreateVetAsync(veterinary);
+            return Ok(vet); 
         }
- 
-
-        // PUT: api/Veterinaries/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+  
+        [HttpPut("{id}", Name = nameof(UpdateVeterinaryAsync))] 
         public async Task<IActionResult> UpdateVeterinaryAsync(int id, VeterinaryCreateUpdateDTO veterinary)
-        {
-            try
-            {
-                if (id != veterinary.Id)
-                {
-                    return BadRequest();
-                }
-
-                var vet = await _VeterinaryBusinessLogic.UpdateVetAsync(veterinary);
-                return Ok(vet);
-            }
-            catch (RepositoryException rex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Error en el acceso a datos: {rex.Message}");
-            }
-            catch (BusinessException bex)
-            {
-                // ⚠️ Error lógico conocido
-                return BadRequest($"Error de negocio: {bex.Message}");
-            }
-            catch (Exception ex)
-            {
-                // 🚨 Error inesperado
-                Console.WriteLine($"[ERROR] {DateTime.Now}: {ex.Message}");
-                if (ex.InnerException != null)
-                    Console.WriteLine($"Inner: {ex.InnerException.Message}");
-
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Ocurrió un error interno en el servidor. Intente nuevamente más tarde.");
-            } 
+        { 
+            if (id != veterinary.Id)  return BadRequest();
+                
+            var vet = await _VeterinaryBusinessLogic.UpdateVetAsync(veterinary);
+            return Ok(vet); 
         }
+
          
-
-        //// DELETE: api/Veterinaries/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteVeterinary(int id)
-        //{
-        //    var veterinary = await _context.Veterinaries.FindAsync(id);
-        //    if (veterinary == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Veterinaries.Remove(veterinary);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
+        [HttpDelete("{id}", Name = nameof(DeleteVeterinaryAsync))] 
+        public async Task<IActionResult> DeleteVeterinaryAsync(int id)
+        {
+            await _VeterinaryBusinessLogic.DeleteVetAsync(id); 
+            return NoContent();
+        }
 
         private bool VeterinaryExists(int id)
         {
