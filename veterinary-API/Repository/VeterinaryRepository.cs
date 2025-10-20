@@ -27,7 +27,9 @@ namespace veterinary_API.Repository
                                 {
                                     Id = v.Id,
                                     FullName = v.Name + " " + v.Lastname
-                                }).ToListAsync();
+                                })
+                                .AsNoTracking()
+                                .ToListAsync();
             }
          
             catch (Exception ex)
@@ -42,7 +44,7 @@ namespace veterinary_API.Repository
             {
                 return await _context.Veterinaries.
                                 Where(vet=>vet.Id == id)
-                                .Include(v => v.Patients)
+                                .Include(v => v.Patients) 
                                 .FirstOrDefaultAsync();
             }
 
