@@ -20,15 +20,9 @@ namespace veterinary_API.BusinessLogic
 
         public async Task<IEnumerable<VeterinaryDTO>> ObtenerTodosAsync()
         { 
-                var vets = await _repo.GetAllAsync();
-
-                var vetsDto = vets.Select(v => new VeterinaryDTO
-                {
-                    Id = v.Id,
-                    FullName = $"{v.Name} {v.Lastname}", 
-                });
-
-                return vetsDto; 
+                return await _repo.GetAllAsync();
+             
+                 
         }
 
         public async Task<VeterinaryDTO> ObtenerByIdAsync(int id)

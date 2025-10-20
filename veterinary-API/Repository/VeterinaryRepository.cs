@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
+using veterinary_API.DTOs;
 using veterinary_API.Exceptions;
 using veterinary_API.Interfaces;
 using veterinary_API.Models;
@@ -16,14 +17,17 @@ namespace veterinary_API.Repository
         {
             _context = context;
         }
-
-        public async Task<IEnumerable<Veterinary>> GetAllAsync()
+         
+        public async Task<IEnumerable<VeterinaryDTO>> GetAllAsync()
         { 
             try
             {
-                return  await _context.Veterinaries
-                                .Include(v => v.Patients)
-                                .ToListAsync();
+                return  await _context.Veterinaries 
+                                .Select(v=> new VeterinaryDTO
+                                {
+                                    Id = v.Id,
+                                    FullName = v.Name + " " + v.Lastname
+                                }).ToListAsync();
             }
          
             catch (Exception ex)

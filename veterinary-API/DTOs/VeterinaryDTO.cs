@@ -9,5 +9,7 @@ namespace veterinary_API.DTOs
         public string ClinicName { get; set; }
         public string ClinicAddress { get; set; } 
 
+        public IEnumerable<PatientDTO> Patients { get; set; }  = Enumerable.Empty<PatientDTO>();
+
     }
 }

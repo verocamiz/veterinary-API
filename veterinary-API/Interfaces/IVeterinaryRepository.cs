@@ -1,4 +1,5 @@
-﻿using veterinary_API.Models;
+﻿using veterinary_API.DTOs;
+using veterinary_API.Models;
 
 namespace veterinary_API.Interfaces
 {
@@ -14,7 +15,7 @@ namespace veterinary_API.Interfaces
         /// <returns>
         /// An asynchronous task that produces an enumerable collection of <see cref="Veterinary"/> objects.
         /// </returns>
-        Task<IEnumerable<Veterinary>> GetAllAsync();
+        Task<IEnumerable<VeterinaryDTO>> GetAllAsync();
         Task<Veterinary?> GetVeterinaryByIdAsync(int id);
 
         public Task<ICollection<Patient>> GetPatientsByIds(IEnumerable<int> patientIds);
