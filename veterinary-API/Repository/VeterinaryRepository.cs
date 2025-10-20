@@ -66,7 +66,7 @@ namespace veterinary_API.Repository
 
             catch (Exception ex)
             { 
-                throw new RepositoryException($"Error when trying to get the veterinaries", ex);
+                throw new RepositoryException($"Error when trying to get the patients", ex);
             }
         }
 
@@ -84,7 +84,7 @@ namespace veterinary_API.Repository
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                throw new RepositoryException($"Error when trying to get the veterinaries", ex);
+                throw new RepositoryException($"Error when trying to create the veterinaries", ex);
             }
         }
 
@@ -105,7 +105,7 @@ namespace veterinary_API.Repository
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                throw new RepositoryException($"Error when trying to get the veterinaries", ex);
+                throw new RepositoryException($"Error when trying to update the veterinaries", ex);
             }
         }
          
@@ -113,9 +113,7 @@ namespace veterinary_API.Repository
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
-            {
-               
-
+            { 
                 _context.Veterinaries.Remove(entity);
                 await _context.SaveChangesAsync();
 

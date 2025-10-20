@@ -63,11 +63,6 @@ namespace veterinary_API.Controllers
         {
             await _VeterinaryBusinessLogic.DeleteVetAsync(id); 
             return NoContent();
-        }
-
-        private bool VeterinaryExists(int id)
-        {
-            return _context.Veterinaries.Any(e => e.Id == id);
-        }
+        } 
     }
 }
